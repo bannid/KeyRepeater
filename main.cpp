@@ -1,15 +1,8 @@
-/*
-
-  @author:Banni
-  This is a simple program that turns key presses into turbo mode.
-  // TODO(Banni): 
-  -- Add mappings from one key to another.
-  -- Write a parser to parse settings from a config file.
-*/
 #include <Windows.h>
 
 #define KEY_TO_TURBO 0x57 //Key 'w'
 #define EAT_KEY_STROKE TRUE
+
 void simulate_key_press(int KeyCode){
 	keybd_event(KeyCode, 0, 0, 0);
 	keybd_event(KeyCode, 0, KEYEVENTF_KEYUP, 0);
