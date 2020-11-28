@@ -6,22 +6,20 @@
  
 */
 #include <Windows.h>
-
+#include "win32_fileapi.h"
+#include "debug.h"
 static int TurboKeys[200];
 static int NumberOfTurboKeys = 0;
 
 #define EAT_KEY_STROKE TRUE
 
-#if defined(DEBUG)
-#define Assert(expression) if(!(expression))*(int*)0 = 0
-#endif
 
 void simulate_key_press(int KeyCode){
 	keybd_event(KeyCode, 0, 0, 0);
 	keybd_event(KeyCode, 0, KEYEVENTF_KEYUP, 0);
 }
 
-bool key_is_turbo(int KeyCode){
+BOOL key_is_turbo(int KeyCode){
 	for(int i = 0; i<NumberOfTurboKeys;i++){
 		if(KeyCode == TurboKeys[i]){
 			return true;
@@ -87,7 +85,12 @@ void initialize(){
 
 int main()
 {
-	Assert(0);
+	win32_file ConfigFile;
+	if(read_entire_file(".config",&ConfigFile)){
+		
+		close_file(&ConfigFile);
+	}
+	
 	char_hex_convert_to_decimal("0x5787564");
 	initialize();
 	HHOOK Hook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
