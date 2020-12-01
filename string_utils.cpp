@@ -25,7 +25,7 @@ bool string_contains(const char * String,
         }
         String++;
     }
-    return false;
+    return(false);
 }
 
 bool line_starts_with(const char * Line, 
@@ -39,17 +39,24 @@ bool line_starts_with(const char * Line,
             return false;
         }
     }
-    return true;
+    return(true);
 }
 
 void read_next_line(const char * Data,
                     char * Output,
                     const int BufferLength){
     int Size = 0;
-    while(*Data != '\n'){
-        *Output++ = *Data;
-        Size++;
-        Assert(Size < BufferLength);
+    while(*Data != '\n' && 
+          *Data != '\r'){
+        if(*Data != '\t' &&
+           *Data != ' '){
+            *Output++ = *Data++;
+            Size++;
+            Assert(Size < BufferLength);
+        }
+        else{
+            Data++;
+        }
     }
     *Output = '\0';
 }
@@ -60,7 +67,21 @@ int string_length(const char * String){
         String++;
         Length++;
     }
-    return Length;
+    return(Length);
+}
+
+
+bool compare_strings(const char * StringFirst,
+                     const char * StringSecond){
+    if(string_length(StringFirst) != string_length(StringSecond)){
+        return false;
+    }
+    while(*StringFirst != '\0'){
+        if(*StringFirst++ != *StringSecond++){
+            return false;
+        }
+    }
+    return true;
 }
 
 void split_string(const char * String,
@@ -83,12 +104,15 @@ void forward_string_pointer_upto(char ** Ptr,
     while(**Ptr != Token){
         *Ptr += 1;
         if(**Ptr == '\0'){
+            //If the token is not found until the end of the string,
+            //then we do not forward the string anywhere.
             NotFound = true;
             *Ptr = Backup;
             break;
         }
     }
     if(!NotFound){
+        //Skip the token as well.
         *Ptr += 1;
     }
 }

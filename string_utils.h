@@ -3,6 +3,8 @@
 #include "debug.h"
 
 void eat_all_white_space(char ** Ptr);
+bool compare_strings(const char * StringFirst,
+                     const char * StringSecond);
 bool string_contains(const char * String, const char * Word);
 bool line_starts_with(const char * Line, const char * Word);
 void read_next_line(const char * Data, char * Output, const int BufferLength);

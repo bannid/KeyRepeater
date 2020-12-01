@@ -5,16 +5,17 @@
  -- Write a parser to parse the config file to set turbo and virtual key mappings
  
 */
-#include <Windows.h>
 #include "win32_fileapi.h"
 #include "debug.h"
 #include "string_utils.h"
+#include "config_parser.h"
+#include "num_utils.h"
 
 static int TurboKeys[200];
 static int NumberOfTurboKeys = 0;
 
 #define EAT_KEY_STROKE TRUE
-
+#define CONFIG_FILE_PATH "../.config"
 
 void simulate_key_press(int KeyCode){
 	keybd_event(KeyCode, 0, 0, 0);
@@ -28,37 +29,6 @@ BOOL key_is_turbo(int KeyCode){
 		}
 	}
 	return false;
-}
-
-int raise_to_power(int Number, int Power){
-	if(Power == 0){
-		return(1);
-	}
-	int ToReturn = 1;
-	for(int i = 1; i<=Power; i++){
-		ToReturn *= Number;
-	}
-	return(ToReturn);
-}
-
-int char_hex_convert_to_decimal(const char * Hex){
-	while(*Hex != 'x' && *Hex != 'X'){
-		Hex++;
-	}
-	*Hex++;
-	int HexcodeStringLength = 0;
-	while(*Hex != '\0'){
-		Hex++;
-		HexcodeStringLength++;
-	}
-	Hex -= HexcodeStringLength;
-	int MaxPower = HexcodeStringLength - 1;
-	int ToInt = 0;
-	for(int i = 0; i<HexcodeStringLength; i++){
-		int Temp = ((int)(*Hex++)) - '0';
-		ToInt +=  raise_to_power(16,MaxPower--) * Temp;
-	}
-	return(ToInt);
 }
 
 LRESULT CALLBACK LowLevelKeyboardProc(int Code, WPARAM WParam, LPARAM LParam)
@@ -82,18 +52,20 @@ LRESULT CALLBACK LowLevelKeyboardProc(int Code, WPARAM WParam, LPARAM LParam)
 }
 
 void initialize(){
-	TurboKeys[NumberOfTurboKeys++] = 0x57;
+    win32_file ConfigFile;
+    if(read_entire_file(CONFIG_FILE_PATH,&ConfigFile)){
+        parse_config(ConfigFile.Data,
+                     TurboKeys,
+                     &NumberOfTurboKeys);
+        close_file(&ConfigFile);
+    }
+	//TurboKeys[NumberOfTurboKeys++] = 0x57;
 }
 
 int main()
 {
 	win32_file ConfigFile;
-	if(read_entire_file(".config",&ConfigFile)){
-		
-		close_file(&ConfigFile);
-	}
-    
-#if 1    
+#if 0    
 	bool Contains = string_contains("kingfullmakesetthere","pig");
     int StringLength = string_length("Banni");
     char SplittedString[10];
