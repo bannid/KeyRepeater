@@ -5,8 +5,16 @@
 #include "string_utils.h"
 #include "debug.h"
 
+struct mapped_key{
+    int KeyCode;
+    int MappedKeyCode;
+};
+
 void parse_config(char * Data,
                   int * TurboKeysArray,
-                  int * NumberOfTurboKeys);
+                  int * NumberOfTurboKeys,
+                  mapped_key * MappedKeys,
+                  int * NumberOfMappedKeys
+                  );
 
 #endif //CONFIG_PARSER_H

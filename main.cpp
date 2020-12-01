@@ -11,24 +11,43 @@
 #include "config_parser.h"
 #include "num_utils.h"
 
-static int TurboKeys[200];
+#define EAT_KEY_STROKE true
+#define NUMBER_OF_KEYS 200
+#if defined(DEBUG)
+#define CONFIG_FILE_PATH "../.config"
+#endif
+
+#if !defined(DEBUG)
+#define CONFIG_FILE_PATH ".config"
+#endif
+
+static int TurboKeys[NUMBER_OF_KEYS];
 static int NumberOfTurboKeys = 0;
 
-#define EAT_KEY_STROKE TRUE
-#define CONFIG_FILE_PATH "../.config"
+static mapped_key MappedKeys[NUMBER_OF_KEYS];
+static int NumberOfMappedKeys = 0;
 
 void simulate_key_press(int KeyCode){
 	keybd_event(KeyCode, 0, 0, 0);
 	keybd_event(KeyCode, 0, KEYEVENTF_KEYUP, 0);
 }
 
-BOOL key_is_turbo(int KeyCode){
+bool key_is_turbo(int KeyCode){
 	for(int i = 0; i<NumberOfTurboKeys;i++){
 		if(KeyCode == TurboKeys[i]){
 			return true;
 		}
 	}
 	return false;
+}
+
+int get_key_mapping(int KeyCode){
+    for(int i = 0; i<NumberOfMappedKeys;i++){
+		if(KeyCode == MappedKeys[i].KeyCode){
+			return MappedKeys[i].MappedKeyCode;
+		}
+	}
+	return KeyCode;
 }
 
 LRESULT CALLBACK LowLevelKeyboardProc(int Code, WPARAM WParam, LPARAM LParam)
@@ -41,8 +60,9 @@ LRESULT CALLBACK LowLevelKeyboardProc(int Code, WPARAM WParam, LPARAM LParam)
         switch (WParam)
         {
 			case WM_KEYDOWN:
-            if (InterestedKey = key_is_turbo(Param->vkCode)) {
-				simulate_key_press(Param->vkCode);
+            int MappedKeyCode = get_key_mapping(Param->vkCode);
+            if (InterestedKey = key_is_turbo(MappedKeyCode)) {
+				simulate_key_press(MappedKeyCode);
 				break;
 			}
 			break;
@@ -56,10 +76,11 @@ void initialize(){
     if(read_entire_file(CONFIG_FILE_PATH,&ConfigFile)){
         parse_config(ConfigFile.Data,
                      TurboKeys,
-                     &NumberOfTurboKeys);
+                     &NumberOfTurboKeys,
+                     MappedKeys,
+                     &NumberOfMappedKeys);
         close_file(&ConfigFile);
     }
-	//TurboKeys[NumberOfTurboKeys++] = 0x57;
 }
 
 int main()

@@ -5,12 +5,12 @@
 
 #if defined(DEBUG)
 #define Assert(expression) if(!(expression))*(int*)0 = 0
-#define DEBUG_OUTPUT(STRING) OutputDebugStringA(STRING)
+#define DEBUG_OUTPUT(string) OutputDebugStringA(string)
 #endif
 
 #if !defined(DEBUG)
 #define Assert(expression) 
-#define DEBUG_OUTPUT(STRING)
+#define DEBUG_OUTPUT(string)
 #endif
 
 #endif

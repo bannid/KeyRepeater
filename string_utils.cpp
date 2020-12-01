@@ -48,6 +48,10 @@ void read_next_line(const char * Data,
     int Size = 0;
     while(*Data != '\n' && 
           *Data != '\r'){
+        if(*Data == '\0'){
+            //End of string, or file.
+            break;
+        }
         if(*Data != '\t' &&
            *Data != ' '){
             *Output++ = *Data++;

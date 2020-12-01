@@ -8,7 +8,7 @@ bool compare_strings(const char * StringFirst,
 bool string_contains(const char * String, const char * Word);
 bool line_starts_with(const char * Line, const char * Word);
 void read_next_line(const char * Data, char * Output, const int BufferLength);
-int string_length(const char * String);
+int  string_length(const char * String);
 void split_string(const char * String,
                   char * Output,
                   int BufferSize,
