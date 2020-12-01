@@ -1,6 +1,7 @@
 /* 
  // TODO(Banni): 
  -- Add the functionality for detecting System keys such as Alt + f4
+
 */
 #include "win32_fileapi.h"
 #include "debug.h"
@@ -24,8 +25,6 @@ static int NumberOfTurboKeys = 0;
 
 static mapped_key MappedKeys[NUMBER_OF_KEYS];
 static int NumberOfMappedKeys = 0;
-
-static HANDLE ConsoleHandle;
 
 void simulate_key_press(int KeyCode){
 	keybd_event(KeyCode, 0, 0, 0);
