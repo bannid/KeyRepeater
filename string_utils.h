@@ -15,4 +15,5 @@ void split_string(const char * String,
                   char Token);
 void forward_string_pointer_upto(char ** Ptr,
                                  char Token);
+void forward_string_pointer_to_next_line(char **Ptr);
 #endif

@@ -116,3 +116,8 @@ void forward_string_pointer_upto(char ** Ptr,
         *Ptr += 1;
     }
 }
+
+void forward_string_pointer_to_next_line(char **Ptr){
+    forward_string_pointer_upto(Ptr,
+                                '\n');
+}
