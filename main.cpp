@@ -10,6 +10,7 @@
 #include "string_utils.h"
 #include "config_parser.h"
 #include "num_utils.h"
+#include "output.h"
 
 #define EAT_KEY_STROKE true
 #define NUMBER_OF_KEYS 200
@@ -26,6 +27,8 @@ static int NumberOfTurboKeys = 0;
 
 static mapped_key MappedKeys[NUMBER_OF_KEYS];
 static int NumberOfMappedKeys = 0;
+
+static HANDLE ConsoleHandle;
 
 void simulate_key_press(int KeyCode){
 	keybd_event(KeyCode, 0, 0, 0);
@@ -72,6 +75,8 @@ LRESULT CALLBACK LowLevelKeyboardProc(int Code, WPARAM WParam, LPARAM LParam)
 }
 
 void initialize(){
+    initialize_std_output();
+    std_output("Banni");
     win32_file ConfigFile;
     if(read_entire_file(CONFIG_FILE_PATH,&ConfigFile)){
         parse_config(ConfigFile.Data,
@@ -80,6 +85,9 @@ void initialize(){
                      MappedKeys,
                      &NumberOfMappedKeys);
         close_file(&ConfigFile);
+    }
+    else{
+        Assert(0);
     }
 }
 
