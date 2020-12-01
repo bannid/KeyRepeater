@@ -1,9 +1,6 @@
 /* 
  // TODO(Banni): 
- 
--- Add key mappings
- -- Write a parser to parse the config file to set turbo and virtual key mappings
- 
+ -- Add the functionality for detecting System keys such as Alt + f4
 */
 #include "win32_fileapi.h"
 #include "debug.h"
@@ -76,7 +73,6 @@ LRESULT CALLBACK LowLevelKeyboardProc(int Code, WPARAM WParam, LPARAM LParam)
 
 void initialize(){
     initialize_std_output();
-    std_output("Banni");
     win32_file ConfigFile;
     if(read_entire_file(CONFIG_FILE_PATH,&ConfigFile)){
         parse_config(ConfigFile.Data,
@@ -87,7 +83,7 @@ void initialize(){
         close_file(&ConfigFile);
     }
     else{
-        Assert(0);
+        std_output("No config file found\n");
     }
 }
 

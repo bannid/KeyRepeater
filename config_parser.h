@@ -4,6 +4,7 @@
 #include "num_utils.h"
 #include "string_utils.h"
 #include "debug.h"
+#include "output.h"
 
 struct mapped_key{
     int KeyCode;

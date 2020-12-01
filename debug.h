@@ -5,7 +5,7 @@
 
 #if defined(DEBUG)
 #define Assert(expression) if(!(expression))*(int*)0 = 0
-#define DEBUG_OUTPUT(string) OutputDebugStringA(string)
+#define DEBUG_OUTPUT(string) std_output(string); std_output("\n");
 #endif
 
 #if !defined(DEBUG)
