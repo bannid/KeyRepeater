@@ -20,3 +20,6 @@ I sometimes play https://agar.io game, where I am required to press 'w' repeated
 Using this utility program is simple - 
 1. First go to https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes to get the hex codes for the interesetd keys. Ie. for 'w' its 0x57
 2. TODO:
+
+# Performance
+This utility program is very small executable and only depends on WIN32_API.  I have tested this program on Windows 10 Home and it runs extremely efficient.
