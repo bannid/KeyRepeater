@@ -38,5 +38,5 @@ Using this utility program is simple -
 This utility program is very small executable and only depends on WIN32_API.  I have tested this program on Windows 10 Home and it runs extremely efficient.
 
 # TODO List
--- Write now the mappings only works for Individual keys and System Keys ie. Alt + f4 are ignored.
--- Make the disable key ie. Alt + f9 configurable, so a user can set that key inside the .config file as well.
+1. Write now the mappings only works for Individual keys and System Keys ie. Alt + f4 are ignored.
+2. Make the disable key ie. Alt + f9 configurable, so a user can set that key inside the .config file as well.
