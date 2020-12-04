@@ -1,7 +1,6 @@
 /* 
  // TODO(Banni): 
  -- Add the functionality for detecting System keys such as Alt + f4
--- Add the functionality to activate or deactivate the program from key presses. ie. Alt + f9
 */
 #include "win32_fileapi.h"
 #include "debug.h"
@@ -20,13 +19,16 @@
 #define CONFIG_FILE_PATH ".config"
 #endif
 
-static int TurboKeys[NUMBER_OF_KEYS];
-static int NumberOfTurboKeys = 0;
 
-static mapped_key MappedKeys[NUMBER_OF_KEYS];
-static int NumberOfMappedKeys = 0;
-//Flag to determine if we should we doing the turbo and mappings
-static bool Activated = true;
+struct key_repeater{
+    int TurboKeys[NUMBER_OF_KEYS];
+    int NumberOfTurboKeys = 0;
+    mapped_key MappedKeys[NUMBER_OF_KEYS];
+    int NumberOfMappedKeys = 0;
+    bool Activated = true;
+};
+
+static key_repeater * GlobalKeyRepeaterPtr;
 
 void simulate_key_press(int KeyCode){
 	keybd_event(KeyCode, 0, 0, 0);
@@ -34,8 +36,8 @@ void simulate_key_press(int KeyCode){
 }
 
 bool key_is_turbo(int KeyCode){
-	for(int i = 0; i<NumberOfTurboKeys;i++){
-		if(KeyCode == TurboKeys[i]){
+	for(int i = 0; i<GlobalKeyRepeaterPtr->NumberOfTurboKeys;i++){
+		if(KeyCode == GlobalKeyRepeaterPtr->TurboKeys[i]){
 			return true;
 		}
 	}
@@ -43,9 +45,9 @@ bool key_is_turbo(int KeyCode){
 }
 
 int get_key_mapping(int KeyCode){
-    for(int i = 0; i<NumberOfMappedKeys;i++){
-		if(KeyCode == MappedKeys[i].KeyCode){
-			return MappedKeys[i].MappedKeyCode;
+    for(int i = 0; i<GlobalKeyRepeaterPtr->NumberOfMappedKeys;i++){
+		if(KeyCode == GlobalKeyRepeaterPtr->MappedKeys[i].KeyCode){
+			return GlobalKeyRepeaterPtr->MappedKeys[i].MappedKeyCode;
 		}
 	}
 	return KeyCode;
@@ -62,15 +64,14 @@ LRESULT CALLBACK LowLevelKeyboardProc(int Code, WPARAM WParam, LPARAM LParam)
         {
 			case WM_KEYDOWN:{
                 int MappedKeyCode = get_key_mapping(Param->vkCode);
-                if (Activated && (InterestedKey = key_is_turbo(MappedKeyCode))) {
+                if (GlobalKeyRepeaterPtr->Activated && (InterestedKey = key_is_turbo(MappedKeyCode))) {
                     simulate_key_press(MappedKeyCode);
                 }
                 break;
             }
             case WM_SYSKEYDOWN:{
-                
                 if(Param->vkCode == VK_F9){
-                    Activated = !Activated;
+                    GlobalKeyRepeaterPtr->Activated = !GlobalKeyRepeaterPtr->Activated;
                 }
                 break;
             }
@@ -83,10 +84,10 @@ void setup_keys(){
     win32_file ConfigFile;
     if(read_entire_file(CONFIG_FILE_PATH,&ConfigFile)){
         parse_config(ConfigFile.Data,
-                     TurboKeys,
-                     &NumberOfTurboKeys,
-                     MappedKeys,
-                     &NumberOfMappedKeys);
+                     GlobalKeyRepeaterPtr->TurboKeys,
+                     &GlobalKeyRepeaterPtr->NumberOfTurboKeys,
+                     GlobalKeyRepeaterPtr->MappedKeys,
+                     &GlobalKeyRepeaterPtr->NumberOfMappedKeys);
         close_file(&ConfigFile);
     }
     else{
@@ -101,6 +102,8 @@ void initialize(){
 
 int main()
 {
+    key_repeater KeyRepeater;
+    GlobalKeyRepeaterPtr = &KeyRepeater;
 	initialize();
 	HHOOK Hook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
 	MSG Msg;
