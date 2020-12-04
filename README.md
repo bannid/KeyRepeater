@@ -1,8 +1,8 @@
-# KeyTurbo
+# KeyRepeater
 This simple utility program helps to turn given keys to turbo mode and can also be used to map keys in Windows.
 
 # Motivation
-I sometimes play https://agar.io game, where I am required to press 'w' repeatedly all the time.  I tried to look for some key turbo utilities online, however, could not find any.  Therefore, I decided to write my own.
+I sometimes play https://agar.io game, where I am required to press 'w' repeatedly all the time.  I tried to look for some key repeater utilities online, however, could not find any.  Therefore, I decided to write my own. While I was writing the key repeater utility, I figured that sometimes I want to play some games with arrows insted of using 'w', 'a', 's', 'd' keys to move, therefore, I decided to write the key mapping capability in this program as well.  I am aware that there are some software that can do the key mappings by editing the registeries, however I prefer to run a small program each time I want to enable the key mappings.
 
 # How to build
 ### Build requirements
@@ -13,10 +13,10 @@ I sometimes play https://agar.io game, where I am required to press 'w' repeated
 1. Clone this repository into your computer.
 2. Open the command prompt
 3. Navigate to the folder where you have cloned this repository.
-4. Run build.bat.
-5. The executable should be outputted in build directory inside the folder where you cloned this repository.
+4. Run releaseBuild.bat.
+5. The executable should be outputted in 'KeyTurbo' directory inside the folder where you cloned this repository.
 
 # How to use
 Using this utility program is simple - 
 1. First go to https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes to get the hex codes for the interesetd keys. Ie. for 'w' its 0x57
-TODO:
+2. TODO:
