@@ -19,7 +19,24 @@ I sometimes play https://agar.io game, where I am required to press 'w' repeated
 # How to use
 Using this utility program is simple - 
 1. First go to https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes to get the hex codes for the interesetd keys. Ie. for 'w' its 0x57
-2. TODO:
-
+2. Create .config file or copy from this repository.
+3. For the keys you want to put into repeating mode, put the hex code inside turboList inside .config file like following:
+```
+        turboList{
+            0x57
+            0x59
+        }
+```
+4. For key mappings, use the following syntax:
+```
+        keyMappings{
+            0x51:0x57
+        }
+```
+5. You can disable the program at anytime by pressing Alt + f9.
 # Performance
 This utility program is very small executable and only depends on WIN32_API.  I have tested this program on Windows 10 Home and it runs extremely efficient.
+
+# TODO List
+-- Write now the mappings only works for Individual keys and System Keys ie. Alt + f4 are ignored.
+-- Make the disable key ie. Alt + f9 configurable, so a user can set that key inside the .config file as well.
