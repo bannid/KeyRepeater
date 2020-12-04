@@ -101,21 +101,6 @@ void initialize(){
 
 int main()
 {
-#if 0    
-	bool Contains = string_contains("kingfullmakesetthere","pig");
-    int StringLength = string_length("Banni");
-    char SplittedString[10];
-    const char * SplittableString = "Banni:Dhaliwal";
-    split_string(SplittableString,
-                 SplittedString,
-                 10,
-                 ':');
-    const char * ForwardableString = "Banni%Dhaliwal";
-    const char * NonForwardableString = "Bannidhaliwal";
-    forward_string_pointer_upto((char**)&ForwardableString,'%');
-    forward_string_pointer_upto((char**)&NonForwardableString,'%');
-    char * char_hex_convert_to_decimal("0x5787564");
-#endif
 	initialize();
 	HHOOK Hook = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
 	MSG Msg;

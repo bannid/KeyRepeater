@@ -14,7 +14,7 @@ I sometimes play https://agar.io game, where I am required to press 'w' repeated
 2. Open the command prompt
 3. Navigate to the folder where you have cloned this repository.
 4. Run releaseBuild.bat.
-5. The executable should be outputted in 'KeyTurbo' directory inside the folder where you cloned this repository.
+5. The executable should be outputted in 'KeyRepeater' directory inside the folder where you cloned this repository.
 
 # How to use
 Using this utility program is simple - 
